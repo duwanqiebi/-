@@ -7,19 +7,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.zhangqiang.sqgl.service.SqglService;
+import com.zhangqiang.sqgl.service.BookmarkService;
 
 @Controller
 @RequestMapping("/")
 public class SqglController {
 	
 	@Autowired
-	private SqglService sqglService;
+	private BookmarkService sqglService;
 	
 	@RequestMapping("/sqgl")
-	@ResponseBody
-	public String readerBooks(){
-		return String.valueOf(sqglService.getAll().size()) ;
-		//return "sqgl";
+	//@ResponseBody
+	public String readerBooks(Model model){
+		model.addAttribute("bookmarks", sqglService.getAll());
+		//return String.valueOf(sqglService.getAll().size()) ;
+		return "sqgl";
 	}
 }

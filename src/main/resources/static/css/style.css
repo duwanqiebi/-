@@ -1,4 +1,25 @@
-﻿html,
+.sqgl_hr{
+  border-bottom: 1px solid transparent;
+  border-color: #E8EBF0;
+  background: -webkit-linear-gradient(bottom, #f6f6f6 0%, #ffffff 5px);
+  background: -moz-linear-gradient(bottom, #f6f6f6 0%, #ffffff 5px);
+  background: -o-linear-gradient(bottom, #f6f6f6 0%, #ffffff 5px);
+  background: linear-gradient(bottom, #f6f6f6 0%, #ffffff 5px);
+}
+.sqgl_droptree{ 
+  background-color: white;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  /*left: -100000px;*/
+  /*width: 100%;*/
+  z-index: 1051;
+}
+
+
+html,
 body {
 background: #ecedf0;
 width: 100%;
@@ -18,12 +39,8 @@ color: #777;
 overflow-x: hidden;
 overflow-y: scroll;
 }
-a {
-color: #cccccc;
-}
-a:hover, a:focus {
-color: #d9d9d9;
-}
+
+
 a:active {
 color: #bfbfbf;
 }
@@ -76,7 +93,7 @@ margin-top: 0;
 margin-bottom: 0;
 }
 .main {
-background: #ecedf0;
+background: #ffffff;
 padding: 85px 37px 98px 37px;
 }
 .small,

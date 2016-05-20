@@ -3,13 +3,13 @@
 	<head>
     	<meta charset="UTF-8" />
 
-		<title>Editable Table | Fire - Admin Template</title>
+		<title>Bookmark Manager</title>
 	 
 		<!-- Mobile Metas -->
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 		
 		<!-- Import google fonts -->
-        <link href='http://fonts.useso.com/css?family=Titillium+Web' rel='stylesheet' type='text/css'>></link>
+        <link href='http://fonts.useso.com/css?family=Titillium+Web' rel='stylesheet' type='text/css'></link>
         
 		<!-- 网页图标 -->
 		<link rel="shortcut icon" href="ico/favicon.ico" type="image/x-icon" ></link>
@@ -23,7 +23,8 @@
 		<link rel="apple-touch-icon" sizes="152x152" href="ico/apple-touch-icon-152x152.png" ></link>
 		
 	    <!-- start: CSS file-->
-		
+		<!-- js Tree CSS -->
+		<link rel="stylesheet" href="plugins/jstree/dist/themes/default/style.min.css" />
 		<!-- Vendor CSS-->
 		<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" ></link>
 		<link href="vendor/skycons/css/skycons.css" rel="stylesheet" ></link>
@@ -38,7 +39,7 @@
 		
 		<!-- Theme CSS -->
 		<link href="css/jquery.mmenu.css" rel="stylesheet" ></link>
-		
+		 
 		<!-- Page CSS -->		
 		<link href="css/style.css" rel="stylesheet" ></link>
 		<link href="css/add-ons.min.css" rel="stylesheet" ></link>
@@ -61,7 +62,7 @@
 	<body>
 	
 		<!-- Start: Header -->
-		<div class="navbar" role="navigation">
+		<div class="navbar" role="navigation" th:fragment="header">
 			<div class="container-fluid co9ntainer-nav">
 
 				<!-- Navbar Right -->
@@ -73,17 +74,17 @@
 								<!--<span class="badge">10</span>-->
 							</a>
 							<ul class="dropdown-menu update-menu" role="menu">
-								<li style="border-bottom: 1px solid #eeeeee;"><a href="#"><i class="fa fa-file-text-o bk-fg-primary "></i> 导入html文件 </a></li>
-								<li style="border-bottom: 1px solid #eeeeee;"><a href="#"><i class="fa fa-bar-chart-o bk-fg-primary"></i> 书签种类初始化 </a></li>
+								<li style="border-bottom: 1px solid #eeeeee;"><a th:href="@{sqdr}"><i class="fa fa-file-text-o bk-fg-primary "></i> 导入html文件 </a></li>
+								<li style="border-bottom: 1px solid #eeeeee;"><a th:href="@{sqzl}"><i class="fa fa-bar-chart-o bk-fg-primary"></i> 书签种类初始化 </a></li>
 								<li ><a href="#"><i class="fa fa-bell bk-fg-primary"></i> 未分类书签管理 </a></li>
-								<li style="border-bottom: 1px solid #eeeeee;"><a href="#"><i class="fa fa-envelope bk-fg-primary"></i> 书签管理 </a></li>		
+								<li style="border-bottom: 1px solid #eeeeee;"><a th:href="@{sqgl}"><i class="fa fa-envelope bk-fg-primary"></i> 书签管理 </a></li>		
 								
 							</ul>
 						</li>					
 					</ul>									
 				</div>
 				<!-- End Navbar Right -->
-			</div>		
+			</div>
 		</div>
 		<!-- End: Header -->
 		
@@ -98,13 +99,11 @@
 					<div class="row">
 						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 							<div class="panel panel-default bk-bg-white">
+								 
 								<div class="panel-heading bk-bg-white">
-									<h6><i class="fa fa-table red"></i><span class="break"></span>Default</h6>							
-									<div class="panel-actions">
-										<a href="#" class="btn-minimize"><i class="fa fa-caret-up"></i></a>
-										<a href="#" class="btn-close"><i class="fa fa-times"></i></a>
-									</div>
+									<h6><span class="break"></span> </h6>
 								</div>
+								
 								<div class="panel-body">
 									<div class="row">
 										<div class="col-sm-6">
@@ -116,16 +115,18 @@
 									<table class="table table-bordered table-striped mb-none" id="datatable-editable">
 										<thead>
 											<tr>
-												<th>Template</th>
-												<th>Browser</th>
-												<th>Platform(s)</th>
-												<th>Actions</th>
+												<th>书签名</th>
+												<th>书签种类</th>
+												<th>点击次数</th>
+												<th>点击次数</th>
 											</tr>
 										</thead>
 										<tbody>
-											<tr class="gradeX">
-												<td>Magento</td>
-												<td>Internet
+											<tr  th:each="bookmark,iterStat : ${bookmarks}" th:class="${iterStat.odd}? 'gradeX'">
+												<td>
+													<a th:text="${bookmark.name}"></a>
+												</td>
+												<td class="select">Internet
 													Explorer 4.0
 												</td>
 												<td>Win 95+</td>
@@ -164,6 +165,7 @@
 		<script src="vendor/js/pace.min.js"></script>
 		
 		<!-- Plugins JS-->
+		<script src="plugins/jstree/dist/jstree.min.js"></script>
 		<script src="plugins/moment/js/moment.min.js"></script>
 		<script src="plugins/select2/select2.js"></script>				
 		<script src="plugins/jquery-datatables/media/js/jquery.dataTables.js"></script>

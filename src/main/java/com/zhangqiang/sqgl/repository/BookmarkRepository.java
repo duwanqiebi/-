@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.repository.Repository;
 import com.zhangqiang.sqgl.domain.Bookmark;
 
+@org.springframework.stereotype.Repository
 public interface BookmarkRepository extends Repository<Bookmark, Long> {
 	
     List<Bookmark> findAll();
