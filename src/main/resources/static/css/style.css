@@ -1,3 +1,7 @@
+td > a{
+	vertical-align: middle;
+}
+
 .sqgl_hr{
   border-bottom: 1px solid transparent;
   border-color: #E8EBF0;

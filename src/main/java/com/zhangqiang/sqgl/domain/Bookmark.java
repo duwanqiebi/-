@@ -2,6 +2,8 @@ package com.zhangqiang.sqgl.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Stack;
+
 import javax.persistence.*;
 
 @SuppressWarnings("serial")
@@ -124,6 +126,20 @@ public class Bookmark implements Serializable {
 		this.icon = icon;
 	}
 
-	
+	public static void main(String[] args){
+		Stack<String> stack = new Stack<>();
+		boolean flag = false;		//计算标志
+		for(int i = 0 ; i < args.length;i ++){
+			String cur = args[i];
+			if(cur == "+" && cur == "*"){
+				flag = true;
+			}else{
+				if(!flag){
+					stack.push(cur);
+				}
+			}
+			
+		}
+	}
 
 }
