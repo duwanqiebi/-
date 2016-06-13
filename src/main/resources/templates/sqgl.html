@@ -118,7 +118,7 @@
 									<table class="table table-bordered table-striped mb-none" id="datatable-editable">
 										<thead>
 											<tr>
-												<th>书签ID</th>
+												<th>ID</th>
 												<th>书签名</th>
 												<th>书签种类</th>
 												<th>点击次数</th>
@@ -127,7 +127,7 @@
 										</thead>
 										<tbody>
 											<tr  th:each="bookmark,iterStat : ${bookmarks}" th:class="${iterStat.odd}? 'gradeX'">
-												<td th:text="${bookmark.id}"></td>
+												<td th:text="${bookmark.id}" class="bookmarkid"></td>
 												<td class="bookmarkname">
 													<img th:src="${bookmark.icon}" />
 													<a th:text="${bookmark.name}" th:href="${bookmark.URL}" target="_blank"></a>

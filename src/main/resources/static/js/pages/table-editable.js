@@ -89,11 +89,11 @@ var map = new Object();
 		build: function() {
 			this.datatable = this.$table.DataTable({
 				aoColumns: [
-				     { "sWidth": "10%" },
-				     { "sWidth": "40%" },
-				     { "sWidth": "30%" },
-				     { "sWidth": "10%" },
-					{ "sWidth": "10%","bSortable": false }
+				     { "sWidth": "5%"},
+				     { "sWidth": "57%" },
+				     { "sWidth": "20%" },
+				     { "sWidth": "9%" },
+					{ "sWidth": "9%","bSortable": false }
 				]
 			});
 			
@@ -222,14 +222,18 @@ var map = new Object();
 			data = this.datatable.row( $row.get(0) ).data();
 			
 			var id = data[0];		//书签id
+			//console.log("id" + id);
 
 			$row.children( 'td' ).each(function( i ) {
+				//id为隐藏列 ，i ++
+				//i ++;
 				var $this = $( this );
-
+				
 				if ( $this.hasClass('actions') ) {
 					_self.rowSetActionsEditing( $row );
 				} else {
 					if( $this.hasClass('select') ){
+						
 						//计算书签种类td宽度
 						var width = $("th:contains('书签种类')").outerWidth() - 16;
 						
@@ -251,11 +255,17 @@ var map = new Object();
 					        }  
 					    });
 					}else if( $this.hasClass('bookmarkname') ){
+						//console.log("bookmarkname");
+						//console.log($this);
+						//console.log(data[i]);
 						//将id与图标对应存入map中
 						map[id] = $("<div>" + data[i] + "</div>").find("img").attr("src");
 						
 						var bookmarkname = $("<div>" + data[i] + "</div>").find("a").text();
 						$this.html( '<input type="text" class="form-control input-block" id="bookmarkname" value="' + bookmarkname + '"/>' );
+						
+					}else if($this.hasClass('bookmarkid')){
+						$this.html( '<input type="text" class="form-control input-block" value="' + data[i] + '"/>' );
 					}else{
 						$this.html( '<input type="text" class="form-control input-block" value="' + data[i] + '"/>' );
 					}
@@ -275,6 +285,7 @@ var map = new Object();
 			}
 			
 			/**取得id*/
+			//console.log($row);
 			var id = $row.find('td').find("input").first().val();
 			
 			values = $row.find('td').map(function() {
