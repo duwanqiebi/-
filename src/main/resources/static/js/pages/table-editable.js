@@ -328,9 +328,23 @@ var map = new Object();
 				}
 			});
 			
+			console.log(values);
+			
+			var datatable = this.datatable;
+			$.ajax({  
+		        type : "get",  //提交方式  
+		        url : "/sqgl/save",//路径  
+		        data:{
+		        	id:values[0],
+		        	name:$("<div>" + values[1] + "</div>").find("a").text(),
+		        	sqzl:values[2]
+		        },
+		        success : function(result) {//返回数据根据结果进行相应的处理  
+		        	datatable.row( $row.get(0) ).data( values );
+		        }  
+		    });
 			
 			
-			this.datatable.row( $row.get(0) ).data( values );
 
 			$actions = $row.find('td.actions');
 			if ( $actions.get(0) ) {

@@ -29,4 +29,11 @@ public class SqglController {
 		sqglService.delete(id);
 		return "";
 	}
+	
+	@RequestMapping("/sqgl/save")
+	@ResponseBody
+	public String save(@RequestParam(value="id")Long id,@RequestParam(value="name") String name,@RequestParam(value="sqzl")String sqzl){
+		sqglService.save(id,name,sqzl);
+		return "";
+	} 
 }

@@ -21,4 +21,18 @@ public class BookmarkService {
 	public void delete(Long id) {
 		repository.delete(id);
 	}
+	
+	/**
+	 * 更新保存书签
+	 * */
+	public void save(Long id, String name, String sqzl) {
+		String sqzlId;
+		if(sqzl.contains("-")){
+			sqzlId = sqzl.split("-")[0];
+		}else{
+			sqzlId = sqzl;
+		}
+		
+		repository.save(id, name , sqzlId);
+	}
 }
