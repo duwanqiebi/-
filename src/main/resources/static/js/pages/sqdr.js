@@ -1,24 +1,31 @@
 var ws = null;
 
-function setConnected(connected) {
-	document.getElementById('connect').disabled = connected;
-	document.getElementById('disconnect').disabled = !connected;
-	document.getElementById('echo').disabled = !connected;
+function fileupload(){
+	connect();
+	$("#modal").click();
+	$("#result").append("正在导入书签.......");
+	
+	$("#uploadform").ajaxSubmit(function(data){
+		$("#result").append(data);
+	});
+	
+	disconnect();
 }
 
+
+
+
+
 function connect() {
-	var target = document.getElementById('target').value;
-	ws = new SockJS(target);
+	ws = new SockJS("/echo");
 	ws.onopen = function() {
-		setConnected(true);
-		log('Info: WebSocket connection opened.');
+		console.log('Info: WebSocket connection opened.');
 	};
 	ws.onmessage = function(event) {
-		log('Received: ' + event.data);
+		$("#result").append(event.data + "&nbsp;");
 	};
 	ws.onclose = function() {
-		setConnected(false);
-		log('Info: WebSocket connection closed.');
+		console.log('Info: WebSocket connection closed.');
 	};
 }
 
@@ -27,7 +34,6 @@ function disconnect() {
 		ws.close();
 		ws = null;
 	}
-	setConnected(false);
 }
 
 function echo() {
@@ -40,14 +46,109 @@ function echo() {
 	}
 }
 
-function log(message) {
-	var console = document.getElementById('console');
-	var p = document.createElement('p');
-	p.style.wordWrap = 'break-word';
-	p.appendChild(document.createTextNode(message));
-	console.appendChild(p);
-	while (console.childNodes.length > 25) {
-		console.removeChild(console.firstChild);
-	}
-	console.scrollTop = console.scrollHeight;
-}
+
+
+(function( $ ) {
+
+	'use strict';
+
+	/*
+	Basic
+	*/
+	$('.modal-basic').magnificPopup({
+		type: 'inline',
+		preloader: false,
+		modal: true
+	});
+
+	/*
+	Sizes
+	*/
+	$('.modal-sizes').magnificPopup({
+		type: 'inline',
+		preloader: false,
+		modal: true
+	});
+
+	/*
+	Modal with CSS animation
+	*/
+	$('.modal-with-zoom-anim').magnificPopup({
+		type: 'inline',
+
+		fixedContentPos: false,
+		fixedBgPos: true,
+
+		overflowY: 'auto',
+
+		closeBtnInside: true,
+		preloader: false,
+		
+		midClick: true,
+		removalDelay: 300,
+		mainClass: 'my-mfp-zoom-in',
+		modal: true
+	});
+
+	$('.modal-with-move-anim').magnificPopup({
+		type: 'inline',
+
+		fixedContentPos: false,
+		fixedBgPos: true,
+
+		overflowY: 'auto',
+
+		closeBtnInside: true,
+		preloader: false,
+		
+		midClick: true,
+		removalDelay: 300,
+		mainClass: 'my-mfp-slide-bottom',
+		modal: true
+	});
+
+	/*
+	Modal Dismiss
+	*/
+	$(document).on('click', '.modal-dismiss', function (e) {
+		e.preventDefault();
+		$.magnificPopup.close();
+	});
+
+	/*
+	Modal Confirm
+	*/
+	$(document).on('click', '.modal-confirm', function (e) {
+		e.preventDefault();
+		$.magnificPopup.close();
+
+		new PNotify({
+			title: 'Success!',
+			text: 'Modal Confirm Message.',
+			type: 'success'
+		});
+	});
+
+	/*
+	Form
+	*/
+	$('.modal-with-form').magnificPopup({
+		type: 'inline',
+		preloader: false,
+		focus: '#name',
+		modal: true,
+
+		// When elemened is focused, some mobile browsers in some cases zoom in
+		// It looks not nice, so we disable it:
+		callbacks: {
+			beforeOpen: function() {
+				if($(window).width() < 700) {
+					this.st.focus = false;
+				} else {
+					this.st.focus = '#name';
+				}
+			}
+		}
+	});
+
+}).apply( this, [ jQuery ]);

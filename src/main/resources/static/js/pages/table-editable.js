@@ -1,4 +1,5 @@
 
+var map = new Object();
 // Data Tables - Config
 (function($) {
 
@@ -44,7 +45,7 @@
 		});
 
 	}
-
+	
 }).apply( this, [ jQuery ]);
 
 
@@ -64,10 +65,9 @@
 				confirmButton: '#dialogConfirm',
 			}
 		},
-
+		
 		initialize: function() {
-			this
-				.setVars()
+			this.setVars()
 				.build()
 				.events();
 		},
@@ -83,18 +83,20 @@
 			this.dialog.$confirm	= $( this.options.dialog.confirmButton );
 
 			return this;
+			
 		},
 
 		build: function() {
 			this.datatable = this.$table.DataTable({
 				aoColumns: [
-					null,
-					null,
-					null,
-					{ "bSortable": false }
+				     { "sWidth": "10%" },
+				     { "sWidth": "40%" },
+				     { "sWidth": "30%" },
+				     { "sWidth": "10%" },
+					{ "sWidth": "10%","bSortable": false }
 				]
 			});
-
+			
 			window.dt = this.datatable;
 
 			return this;
@@ -216,8 +218,10 @@
 		rowEdit: function( $row ) {
 			var _self = this,
 				data;
-
+			
 			data = this.datatable.row( $row.get(0) ).data();
+			
+			var id = data[0];		//书签id
 
 			$row.children( 'td' ).each(function( i ) {
 				var $this = $( this );
@@ -225,7 +229,37 @@
 				if ( $this.hasClass('actions') ) {
 					_self.rowSetActionsEditing( $row );
 				} else {
-					$this.html( '<input type="text" class="form-control input-block" value="' + data[i] + '"/>' );
+					if( $this.hasClass('select') ){
+						//计算书签种类td宽度
+						var width = $("th:contains('书签种类')").outerWidth() - 16;
+						
+						var html = '<input type="text" class="form-control input-block" value="' + data[i] + '"/>';
+							html += '<div  class="sqgl_droptree form-control input-block " style="width:' + width +'px;height:300px; overflow:auto;display:none"><div id="sqzl"></div></div>';
+						
+						$this.html(html);
+							
+
+						$this.find("input").on("click",function(){
+							$this.find("div:first").slideToggle();
+						});
+						
+						$.ajax({  
+					        type : "GET",  //提交方式  
+					        url : "/sqzl/getall",//路径  
+					        success : function(result) {//返回数据根据结果进行相应的处理  
+					        	createTree(result,$this);
+					        }  
+					    });
+					}else if( $this.hasClass('bookmarkname') ){
+						//将id与图标对应存入map中
+						map[id] = $("<div>" + data[i] + "</div>").find("img").attr("src");
+						
+						var bookmarkname = $("<div>" + data[i] + "</div>").find("a").text();
+						$this.html( '<input type="text" class="form-control input-block" id="bookmarkname" value="' + bookmarkname + '"/>' );
+					}else{
+						$this.html( '<input type="text" class="form-control input-block" value="' + data[i] + '"/>' );
+					}
+					
 				}
 			});
 		},
@@ -239,18 +273,34 @@
 				this.$addButton.removeAttr( 'disabled' );
 				$row.removeClass( 'adding' );
 			}
-
+			
+			/**取得id*/
+			var id = $row.find('td').find("input").first().val();
+			
 			values = $row.find('td').map(function() {
-				var $this = $(this);
 
+				var $this = $(this);
+				
 				if ( $this.hasClass('actions') ) {
 					_self.rowSetActionsDefault( $row );
 					return _self.datatable.cell( this ).data();
 				} else {
+					//如果是下拉框，则取下拉框的值
+					if($this.find('#selected').length > 0){
+						return $.trim( $this.find('#selected').val() );
+					}
+					//如果是书签名，则加上图表生成html
+					if($this.find("#bookmarkname").length > 0){
+						console.log("<img" + map[id] + "/><a>" + $this.find('input').val() + "</a>");
+						return $.trim("<img src='" + map[id] + "' /><a>" + $this.find('input').val() + "</a>");
+					}
+					//如果是input，则取input的值
 					return $.trim( $this.find('input').val() );
 				}
 			});
-
+			
+			
+			
 			this.datatable.row( $row.get(0) ).data( values );
 
 			$actions = $row.find('td.actions');
@@ -280,9 +330,43 @@
 		}
 
 	};
-
 	$(function() {
+		console.log(3);
 		EditableTable.initialize();
 	});
 
 }).apply( this, [ jQuery ]);
+
+
+
+/**生成目录树**/
+function createTree(result,$this){
+	result = eval("" + result + ""); 
+	var state = new Object();
+	state.opened = true;
+	state.selected = false;
+	
+	//为json添加state属性
+	for(var index = 0; index　< result.length ; index ++){
+		result[index].state =  state;
+	}
+
+	console.log(JSON.stringify(result));
+	
+	$this.find("div:last").jstree({
+			  "core" : {
+			    "animation" : 0,
+			    "check_callback" : true,
+			    "themes" : { "stripes" : true },
+			    'data' : result
+			  },
+			  "plugins" : [
+			    "dnd", "search",
+			    "types", "wholerow"
+			  ]
+		 }).on('select_node.jstree', function (e, data) {
+			 $this.find("input").val(data.node.id + "-" +data.node.text);
+			 $this.find("div:first").slideToggle();
+		 });
+	
+}
