@@ -76,24 +76,28 @@
 	<div class="container-fluid content">
 		<div class="row">
 			<div class="main">
-				<div class="form-group">
-					<form action="sqdr/upload" method="post" enctype="multipart/form-data" id="uploadform">
-						<label class="col-md-3 control-label" for="file-multiple-input">Multiple
-							File input</label>
-						<div class="col-md-9">
-							<input type="file" id="file-multiple-input"
-								name="file" multiple="true" />
+				<div class="panel">
+					<div class="panel-body" style="background:#a3d781">
+						<form action="sqdr/upload" method="post" enctype="multipart/form-data" id="uploadform">
+						<label class="col-md-3 control-label" for="file-multiple-input">导入书签</label>
+						<div class="col-md-3">
+							<input type="file" id="file-multiple-input" name="file" multiple="true" style="display: table;"/>
 						</div>
 						
 						<button class="bk-margin-5 btn btn-danger btn-circle btn-lg" type="button" onclick="fileupload()"><i class="fa  fa-paperclip"></i></button>
 						<!-- <input type="submit" value="提交" />   -->
 					</form>
+					</div>
+				</div>
+			
+				<div class="form-group">
+					
 	
 					<a class="bk-margin-top-10 bk-margin-bottom-10 modal-basic btn btn-default" href="#modalBasic"  style="display:none" id="modal"></a>
 					<div id="modalBasic" class="modal-block mfp-hide">
 										<div class="panel panel-default">
 											<div class="panel-heading">
-												<h2 class="panel-title">Are you sure?</h2>
+												<h2 class="panel-title">导入书签</h2>
 											</div>
 											<div class="panel-body bk-noradius">
 												<div class="modal-wrapper">
@@ -111,6 +115,34 @@
 											</div>
 										</div>
 					</div>
+					
+					
+					<a class="bk-margin-top-10 bk-margin-bottom-10 modal-basic btn btn-warning" href="#nofilemodal" style="display:none" id="nofile">Warning</a>
+					<div id="nofilemodal" class="modal-block modal-block-warning mfp-hide">
+										<div class="panel panel-default">
+											<div class="panel-heading">
+												<h2 class="panel-title">Warning!</h2>
+											</div>
+											<div class="panel-body bk-noradius">
+												<div class="modal-wrapper">
+													<div class="modal-icon">
+														<i class="fa fa-warning"></i>
+													</div>
+													<div class="modal-text">
+														<h4>Warning</h4>
+														<p id = "nofileAlert"></p>
+													</div>
+												</div>
+											</div>
+											<div class="panel-footer">
+												<div class="row">
+													<div class="col-md-12 text-right">
+														<button class="btn btn-warning modal-dismiss">OK</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
 				</div>
 			</div>
 

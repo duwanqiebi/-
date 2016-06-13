@@ -1,15 +1,36 @@
 var ws = null;
 
 function fileupload(){
-	connect();
-	$("#modal").click();
-	$("#result").append("正在导入书签.......");
+	var files = document.getElementById("file-multiple-input").files;
+	if(files.length == 0){
+		$("#nofileAlert").html();
+		$("#nofileAlert").html("没有文件，请选择文件");
+		$("#nofile").click();
+	}
+		
+	else{
+		for(var i = 0 ; i < files.length; i ++){
+			var filename= files[i].name;
+			var fileExt=(/[.]/.exec(filename)) ? /[^.]+$/.exec(filename.toLowerCase()) : ''; 
+			if(fileExt != "html"){
+				$("#nofileAlert").html();
+				$("#nofileAlert").html("文件格式不正确，请选择浏览器导出的html文件");
+				$("#nofile").click();
+				return ;
+			}
+		}
+		
+		connect();
+		$("#modal").click();
+		$("#result").append("正在导入书签.......");
+		
+		$("#uploadform").ajaxSubmit(function(data){
+			$("#result").append(data);
+		});
+		
+		disconnect();
+	}
 	
-	$("#uploadform").ajaxSubmit(function(data){
-		$("#result").append(data);
-	});
-	
-	disconnect();
 }
 
 
