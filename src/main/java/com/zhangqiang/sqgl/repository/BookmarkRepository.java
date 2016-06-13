@@ -12,4 +12,6 @@ public interface BookmarkRepository extends Repository<Bookmark, Long> {
     List<Bookmark> findAll();
     
     void save(Bookmark bookmark);
+    
+    void delete(Long id);
 }

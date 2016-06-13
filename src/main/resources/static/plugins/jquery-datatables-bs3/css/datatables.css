@@ -1,3 +1,11 @@
+table.dataTable tbody tr.selected td{
+  background-color: #b0bed9;
+}
+
+table.dataTable.stripe tbody tr.odd.selected, table.dataTable.display tbody tr.odd.selected {
+  background-color: #abb9d3;
+}
+
 div.dataTables_length label {
 	float: left;
 	text-align: left;

@@ -125,7 +125,25 @@ var map = new Object();
 					e.preventDefault();
 
 					var $row = $(this).closest( 'tr' );
+					
+					$(document).on('click', '.modal-confirm', function (e) {
+						e.preventDefault();
+						_self.rowRemove( $row );
+						$.magnificPopup.close();
 
+						new PNotify({
+							title: 'Success!',
+							text: '删除成功',
+							type: 'success'
+						});
+					});
+					
+					$(document).on('click', '.modal-dismiss', function (e) {
+						e.preventDefault();
+
+						$.magnificPopup.close();
+					});
+					
 					$.magnificPopup.open({
 						items: {
 							src: '#dialog',
@@ -323,11 +341,22 @@ var map = new Object();
 		},
 
 		rowRemove: function( $row ) {
+			var datatable = this.datatable;
+			
 			if ( $row.hasClass('adding') ) {
 				this.$addButton.removeAttr( 'disabled' );
 			}
-
-			this.datatable.row( $row.get(0) ).remove().draw();
+			/**ajax请求 删除**/
+			var id = datatable.row( $row.get(0) ).data()[0];
+			$.ajax({  
+		        type : "get",  //提交方式  
+		        url : "/sqgl/delete",//路径  
+		        data:{id:id},
+		        success : function(result) {//返回数据根据结果进行相应的处理  
+		        	datatable.row( $row.get(0) ).remove().draw();
+		        }  
+		    });
+			
 		},
 
 		rowSetActionsEditing: function( $row ) {
@@ -342,11 +371,19 @@ var map = new Object();
 
 	};
 	$(function() {
-		console.log(3);
 		EditableTable.initialize();
 	});
 
 }).apply( this, [ jQuery ]);
+
+
+$(document).ready(function() {
+    $('#datatable-editable tbody').on( 'click', 'tr', function () {
+    	//alert("click");
+    	//console.log($(this));
+        $(this).toggleClass('selected');
+    } );
+});
 
 
 
@@ -362,7 +399,6 @@ function createTree(result,$this){
 		result[index].state =  state;
 	}
 
-	console.log(JSON.stringify(result));
 	
 	$this.find("div:last").jstree({
 			  "core" : {

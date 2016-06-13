@@ -15,4 +15,10 @@ public class BookmarkService {
 	public List<Bookmark> getAll(){
 		return repository.findAll();
 	}
+	/**
+	 * 删除书签
+	 * */
+	public void delete(Long id) {
+		repository.delete(id);
+	}
 }

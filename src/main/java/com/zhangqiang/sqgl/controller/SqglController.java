@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zhangqiang.sqgl.service.BookmarkService;
@@ -17,10 +17,16 @@ public class SqglController {
 	private BookmarkService sqglService;
 	
 	@RequestMapping("/sqgl")
-	//@ResponseBody
 	public String readerBooks(Model model){
 		model.addAttribute("bookmarks", sqglService.getAll());
 		//return String.valueOf(sqglService.getAll().size()) ;
 		return "sqgl";
+	}
+	
+	@RequestMapping("/sqgl/delete")
+	@ResponseBody
+	public String delete( @RequestParam(value = "id") Long id){
+		sqglService.delete(id);
+		return "";
 	}
 }
