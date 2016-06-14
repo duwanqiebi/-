@@ -35,4 +35,8 @@ public class BookmarkService {
 		
 		repository.save(id, name , sqzlId);
 	}
+	
+	public void click(Long id, Long clickSum) {
+		repository.updateClickSumById(id,clickSum);
+	}
 }

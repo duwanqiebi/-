@@ -22,4 +22,9 @@ public interface BookmarkRepository extends Repository<Bookmark, Long> {
 	@Modifying
 	@Query(value = "update BOOKMARK set name = ?2,classid=?3,modifydate=sysdate where id = ?1", nativeQuery = true)
 	void save(Long id, String name, String sqzlId);
+    
+    @Transactional
+	@Modifying
+	@Query(value = "update BOOKMARK set clicksnum = ?2,lastdate=sysdate where id = ?1", nativeQuery = true)
+	void updateClickSumById(Long id, Long clickSum);
 }

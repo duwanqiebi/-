@@ -1,5 +1,6 @@
 
 var map = new Object();
+var edittable;
 // Data Tables - Config
 (function($) {
 
@@ -73,6 +74,7 @@ var map = new Object();
 		},
 
 		setVars: function() {
+			edittable = this;
 			this.$table				= $( this.options.table );
 			this.$addButton			= $( this.options.addButton );
 
@@ -328,7 +330,7 @@ var map = new Object();
 				}
 			});
 			
-			console.log(values);
+			//console.log(values);
 			
 			var datatable = this.datatable;
 			$.ajax({  
@@ -430,4 +432,38 @@ function createTree(result,$this){
 			 $this.find("div:first").slideToggle();
 		 });
 	
+}
+
+/**书签点击事件，点击次数加1，lastdate为当前时间*/
+function bookmarkClick(obj){
+	var values = [];
+	var $row = $(obj.closest('tr'));
+	values = $row.find('td').map(function() {
+		//console.log(this);
+		var $this = $(this);
+		//console.log($this);
+		
+		if ( $this.hasClass('actions') ) {
+			edittable.rowSetActionsDefault( $row );
+			return edittable.datatable.cell( this ).data();
+		} else {
+			//如果是input，则取input的值
+			return $.trim( $this.html() );
+		}
+	});
+	//console.log(values);
+	values[3] = parseInt( values[3]) + 1;
+	$.ajax({  
+        type : "get",  //提交方式  
+        url : "/sqgl/click",//路径  
+        data:{
+        	id:values[0],
+        	clickSum:values[3]
+        },
+        success : function(result) {//返回数据根据结果进行相应的处理  
+        	//datatable.row( $row.get(0) ).remove().draw();
+        	edittable.datatable.row( $row.get(0) ).data( values );
+        	edittable.datatable.draw();
+        }  
+    });
 }

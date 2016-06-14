@@ -131,7 +131,7 @@
 												<td th:text="${bookmark.id}" class="bookmarkid"></td>
 												<td class="bookmarkname">
 													<img th:src="${bookmark.icon}" />
-													<a th:text="${bookmark.name}" th:href="${bookmark.URL}" target="_blank"></a>
+													<a th:text="${bookmark.name}" th:href="${bookmark.URL}" target="_blank" onclick="bookmarkClick(this)"></a>
 												</td>
 												<td class="select"  th:text="${bookmark.classid}" ></td>
 												<td th:text="${bookmark.clicksnum}"></td>

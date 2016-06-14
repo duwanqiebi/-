@@ -36,4 +36,11 @@ public class SqglController {
 		sqglService.save(id,name,sqzl);
 		return "";
 	} 
+	
+	@RequestMapping("/sqgl/click")
+	@ResponseBody
+	public String click(@RequestParam(value="id")Long id,@RequestParam(value="clickSum") Long clickSum){
+		sqglService.click(id,clickSum);
+		return "";
+	}
 }
