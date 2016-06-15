@@ -11,7 +11,7 @@ import com.zhangqiang.sqgl.domain.Bookmark;
 
 @org.springframework.stereotype.Repository
 public interface BookmarkRepository extends Repository<Bookmark, Long> {
-	
+	@Query(value = "select * from  BOOKMARK  where id <> 1", nativeQuery = true)
     List<Bookmark> findAll();
     
     void save(Bookmark bookmark);
@@ -27,4 +27,13 @@ public interface BookmarkRepository extends Repository<Bookmark, Long> {
 	@Modifying
 	@Query(value = "update BOOKMARK set clicksnum = ?2,lastdate=sysdate where id = ?1", nativeQuery = true)
 	void updateClickSumById(Long id, Long clickSum);
+
+	List<Bookmark> findByClassid(Long classId);
+
+	Bookmark findOne(Long id);
+	
+	@Transactional
+	@Modifying
+	@Query(value = "update BOOKMARK set classid = ?2,modifydate=sysdate where id = ?1", nativeQuery = true)
+	void updateClassId(long parseLong, Long classId);
 }

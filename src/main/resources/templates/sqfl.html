@@ -78,7 +78,7 @@
 							<ul class="dropdown-menu update-menu" role="menu">
 								<li style="border-bottom: 1px solid #eeeeee;"><a th:href="@{sqdr}"><i class="fa fa-file-text-o bk-fg-primary "></i> 导入html文件 </a></li>
 								<li style="border-bottom: 1px solid #eeeeee;"><a th:href="@{sqzl}"><i class="fa fa-bar-chart-o bk-fg-primary"></i> 书签种类初始化 </a></li>
-								<li ><a href="#"><i class="fa fa-bell bk-fg-primary"></i> 未分类书签管理 </a></li>
+								<li ><a th:href="@{sqfl}"><i class="fa fa-bell bk-fg-primary"></i> 未分类书签管理 </a></li>
 								<li style="border-bottom: 1px solid #eeeeee;"><a th:href="@{sqgl}"><i class="fa fa-envelope bk-fg-primary"></i> 书签管理 </a></li>		
 								
 							</ul>
@@ -108,22 +108,28 @@
 								
 								<div class="panel-body">
 									<div class="row">
-										<!--  
+										  
 										<div class="col-sm-6">
 											<div class="bk-margin-bottom-10">
-												<button id="addToTable" class="btn btn-info">Add <i class="fa fa-plus"></i></button>
+												<!--  <button id="addToTable" class="btn btn-info">Add <i class="fa fa-plus"></i></button>-->
+												<button class="btn btn-info" onclick="classify()">分类  <i class="fa fa-briefcase"></i></button>
+												<button class="btn btn-info" onclick="delete()">删除  <i class="fa fa-gavel"></i></button>
 											</div>
 										</div>
-										-->
+										
+										<div class="col-sm-6">
+											<div class="bk-margin-bottom-10">
+												<!--  <button id="addToTable" class="btn btn-info">Add <i class="fa fa-plus"></i></button>-->
+												
+											</div>
+										</div>
+										
 									</div>
 									<table class="table table-bordered table-striped mb-none" id="datatable-editable">
 										<thead>
 											<tr>
-												<th>ID</th>
-												<th>书签名</th>
-												<th>书签种类</th>
-												<th>点击次数</th>
-												<th>点击次数</th>
+												<th style="text-align:center;">ID</th>
+												<th style="text-align:center;">书签名</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -132,14 +138,6 @@
 												<td class="bookmarkname">
 													<img th:src="${bookmark.icon}" />
 													<a th:text="${bookmark.name}" th:href="${bookmark.URL}" target="_blank" onclick="bookmarkClick(this)"></a>
-												</td>
-												<td class="select"  th:text="${bookmark.classid}" ></td>
-												<td th:text="${bookmark.clicksnum}"></td>
-												<td class="actions">
-													<a href="#" class="hidden on-editing save-row"><i class="fa fa-save"></i></a>
-													<a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
-													<a href="#" class="on-default edit-row"><i class="fa fa-pencil"></i></a>
-													<a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
 												</td>
 											</tr>
 										</tbody>
@@ -154,6 +152,57 @@
 				
 			</div>
 		</div><!--/container-->
+		
+		<div id="modalInfo" class="modal-block modal-block-info mfp-hide">
+										<div class="panel panel-default">
+											<div class="panel-heading">
+												<h2 class="panel-title">Information</h2>
+											</div>
+											<div class="panel-body bk-noradius">
+												<div class="modal-wrapper">
+													<div class="modal-icon">
+														<i class="fa fa-info-circle"></i>
+													</div>
+													<div class="modal-text">
+														<h4>Info</h4>
+														<p id="info"></p>
+													</div>
+												</div>
+											</div>
+											<div class="panel-footer">
+												<div class="row">
+													<div class="col-md-12 text-right">
+														<button class="btn btn-info modal-dismiss" onclick="$.magnificPopup.close()">OK</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+		<!-- 选择种类Modal -->
+		<div id="modalForm" class="modal-block modal-block-primary mfp-hide">
+										<div class="panel panel-default">
+											<div class="panel-heading">
+												<h2 class="panel-title">选择书签种类</h2>
+											</div>
+											<div class="panel-body bk-noradius">
+												<form id="demo-form" class="form-horizontal mb-lg" novalidate="novalidate">
+													<div class="form-group mt-lg">
+														<div id="sqzl"></div>
+													</div>
+												</form>
+											</div>
+											<div class="panel-footer">
+												<div class="row">
+													<div class="col-md-12 text-right">
+														<button class="btn btn-primary modal-confirm" onclick="modalClassify()">Submit</button>
+														<button class="btn btn-default modal-dismiss" onclick="$.magnificPopup.close()">Cancel</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+		
+		
 		
 		<div id="dialog" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">
 										<div class="panel panel-default">
@@ -173,8 +222,8 @@
 											<div class="panel-footer">
 												<div class="row">
 													<div class="col-md-12 text-right">
-														<button class="btn btn-primary modal-confirm">confirm</button>
-														<button class="btn btn-default modal-dismiss">cancel</button>
+														<button class="btn btn-primary modal-confirm" onclick="confirmOnclick()">confirm</button>
+														<button class="btn btn-default modal-dismiss" onclick="$.magnificPopup.close()">cancel</button>
 													</div>
 												</div>
 											</div>

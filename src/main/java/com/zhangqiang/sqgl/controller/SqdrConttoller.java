@@ -13,10 +13,7 @@ import com.zhangqiang.sqgl.service.BookmarkUploadService;
 @RequestMapping("/")
 public class SqdrConttoller {
 	
-//	@Bean
-//	public EchoWebSocketHandler hander(){
-//		return new EchoWebSocketHandler(null);
-//	}
+
 	@Autowired
 	private BookmarkUploadService sqdrService;
 	

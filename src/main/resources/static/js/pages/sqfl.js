@@ -2,6 +2,53 @@
 var map = new Object();
 var edittable;
 // Data Tables - Config
+var sqzlJson;
+
+$(function () { 
+	
+	$.ajax({  
+        type : "GET",  //提交方式  
+        url : "/sqzl/getall",//路径  
+        success : function(result) {//返回数据根据结果进行相应的处理  
+        	createTree(result);
+        }  
+    }); 
+	
+	
+	
+});
+
+
+/**生成目录树**/
+function createTree(result){
+	result = eval("" + result + "");  
+	
+	$('#sqzl')
+		.jstree({
+			  "core" : {
+			    "animation" : 0,
+			    "check_callback" : true,
+			    "themes" : { "stripes" : true },
+			    'data' : result
+			  },
+			  "plugins" : [
+			    "contextmenu","dnd", "search",
+			    "state", "types", "wholerow"
+			  ]
+		 });
+}
+
+/**创建节点*/
+function create() {
+	var ref = $('#sqzl').jstree(true),
+		sel = ref.get_selected();
+	if(!sel.length) { return false; }
+	sel = sel[0];
+	sel = ref.create_node(sel, {"type":"file"});
+	if(sel) {
+		ref.edit(sel);
+	}
+};
 (function($) {
 
 	'use strict';
@@ -92,10 +139,7 @@ var edittable;
 			this.datatable = this.$table.DataTable({
 				aoColumns: [
 				     { "sWidth": "5%"},
-				     { "sWidth": "57%" },
-				     { "sWidth": "20%" },
-				     { "sWidth": "9%" },
-					{ "sWidth": "9%","bSortable": false }
+				     { "sWidth": "95%" },
 				]
 			});
 			
@@ -394,76 +438,154 @@ var edittable;
 
 
 $(document).ready(function() {
+	/** 表格添加点击变色效果 **/
     $('#datatable-editable tbody').on( 'click', 'tr', function () {
-    	//alert("click");
-    	//console.log($(this));
         $(this).toggleClass('selected');
     } );
 });
 
 
 
-/**生成目录树**/
-function createTree(result,$this){
-	result = eval("" + result + ""); 
-	var state = new Object();
-	state.opened = true;
-	state.selected = false;
-	
-	//为json添加state属性
-	for(var index = 0; index　< result.length ; index ++){
-		result[index].state =  state;
-	}
 
-	
-	$this.find("div:last").jstree({
-			  "core" : {
-			    "animation" : 0,
-			    "check_callback" : true,
-			    "themes" : { "stripes" : true },
-			    'data' : result
-			  },
-			  "plugins" : [
-			    "dnd", "search",
-			    "types", "wholerow"
-			  ]
-		 }).on('select_node.jstree', function (e, data) {
-			 $this.find("input").val(data.node.id + "-" +data.node.text);
-			 $this.find("div:first").slideToggle();
-		 });
-	
-}
 
 /**书签点击事件，点击次数加1，lastdate为当前时间*/
 function bookmarkClick(obj){
 	var values = [];
 	var $row = $(obj.closest('tr'));
 	values = $row.find('td').map(function() {
-		//console.log(this);
 		var $this = $(this);
-		//console.log($this);
-		
-		if ( $this.hasClass('actions') ) {
-			edittable.rowSetActionsDefault( $row );
-			return edittable.datatable.cell( this ).data();
-		} else {
-			//如果是input，则取input的值
-			return $.trim( $this.html() );
-		}
+		return $.trim( $this.html() );
 	});
-	//console.log(values);
-	values[3] = parseInt( values[3]) + 1;
 	$.ajax({  
         type : "get",  //提交方式  
-        url : "/sqgl/click",//路径  
+        url : "/sqfl/click",//路径  
         data:{
-        	id:values[0],
-        	clickSum:values[3]
-        },
-        success : function(result) {//返回数据根据结果进行相应的处理  
-        	//datatable.row( $row.get(0) ).remove().draw();
-        	edittable.datatable.row( $row.get(0) ).data( values );
-        	edittable.datatable.draw();
-        }  
+        	id:values[0]
+        } 
     });
 }
+
+function classify(){
+	//首先判断是否选择了行
+	var table = $('#datatable-editable').DataTable();
+	rows = table.rows('.selected');
+	var selectData = table.rows('.selected').data();
+	if(selectData.length == 0){
+		$("#info").html("请选择要分类的书签");
+		$.magnificPopup.open({
+			items: {
+				src: '#modalInfo',
+				type: 'inline'
+			},
+			preloader: false,
+			modal: true
+		});
+		
+	}else{
+		$.magnificPopup.open({
+			items: {
+				src: '#modalForm',
+				type: 'inline'
+			},
+			preloader: false,
+			modal: true
+		});
+		
+
+	}
+}
+
+function modalClassify(){
+	//获取选择的种类
+	var classId = $("#sqzl").jstree().get_selected()[0];
+	//获取选择的书签
+	var table = $('#datatable-editable').DataTable();
+	rows = table.rows('.selected');
+	var selectData = rows.data();
+	var ids =  "";	
+	for(var i = 0 ; i < selectData.length; i ++){
+		if(i == selectData.length - 1){
+			ids += selectData[i][0];
+		}else{
+			ids += selectData[i][0];
+			ids += ",";
+		}
+	}
+	
+	
+	$.ajax({  
+        type : "get",  //提交方式  
+        url : "/sqfl/classify",//路径  
+        data:{
+        	ids:ids,
+        	classId:classId
+        },
+        success:function(data){
+        	edittable.datatable.row(rows[0]).remove();
+        	edittable.datatable.draw();
+        	$.magnificPopup.close();
+        }
+    });
+}
+
+/**删除书签**/
+function delete(){
+	//首先判断是否选择了行
+	var table = $('#datatable-editable').DataTable();
+	rows = table.rows('.selected');
+	var selectData = table.rows('.selected').data();
+	if(selectData.length == 0){
+		$("#info").html("请选择要分类的书签");
+		$.magnificPopup.open({
+			items: {
+				src: '#modalInfo',
+				type: 'inline'
+			},
+			preloader: false,
+			modal: true
+		});	
+	}else{
+		$("#info").html("请选择要分类的书签");
+		$.magnificPopup.open({
+			items: {
+				src: '#dialog',
+				type: 'inline'
+			},
+			preloader: false,
+			modal: true
+		});
+	}
+}
+
+/**确认删除**/
+function confirmOnclick(){
+	//获取选择的书签
+	var table = $('#datatable-editable').DataTable();
+	rows = table.rows('.selected');
+	var selectData = rows.data();
+	var ids =  "";	
+	for(var i = 0 ; i < selectData.length; i ++){
+		if(i == selectData.length - 1){
+			ids += selectData[i][0];
+		}else{
+			ids += selectData[i][0];
+			ids += ",";
+		}
+	}
+	
+	$.ajax({  
+        type : "get",  //提交方式  
+        url : "/sqfl/delete",//路径  
+        data:{
+        	ids:ids,
+        	classId:classId
+        },
+        success:function(data){
+        	edittable.datatable.row(rows[0]).remove();
+        	edittable.datatable.draw();
+        	$.magnificPopup.close();
+        }
+    });
+}
+
+
