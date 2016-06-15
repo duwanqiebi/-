@@ -1,0 +1,1 @@
+mvn clean package -Dstart-class=com.zhangqiang.sqgl.Application
