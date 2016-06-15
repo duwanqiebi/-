@@ -13,6 +13,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
+		<start-class>com.zhangqiang.sqgl.Application</start-class>
 	</properties>
 
 	<parent>
@@ -33,7 +34,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- thymeleaf模板依赖  -->
+		<!-- thymeleaf模板依赖 -->
 		<dependency>
 			<groupId>org.thymeleaf</groupId>
 			<artifactId>thymeleaf</artifactId>
@@ -46,7 +47,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		<!-- h2数据库依赖  -->
+		<!-- h2数据库依赖 -->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
@@ -58,27 +59,23 @@
 		</dependency>
 		<!-- fast Json -->
 		<dependency>
-		    <groupId>com.alibaba</groupId>
-		    <artifactId>fastjson</artifactId>
-		    <version>1.2.11</version>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.11</version>
 		</dependency>
-		<!--  
+		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-security</artifactId> 
+			</dependency> -->
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
+			<artifactId>spring-boot-devtools</artifactId>
 		</dependency>
-		-->
-		
-		<dependency>  
-	       <groupId>org.springframework.boot</groupId>  
-	       <artifactId>spring-boot-devtools</artifactId>   
-	   </dependency>
-	   
-	   <!-- http://mvnrepository.com/artifact/org.jsoup/jsoup -->
+
+		<!-- http://mvnrepository.com/artifact/org.jsoup/jsoup -->
 		<dependency>
-		    <groupId>org.jsoup</groupId>
-		    <artifactId>jsoup</artifactId>
-		    <version>1.8.3</version>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>1.8.3</version>
 		</dependency>
 	</dependencies>
 
@@ -87,18 +84,25 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
-	
-	<repositories>  
-    	<repository>  
-        	<id>spring-milestones</id>  
-        	<name>Spring Milestones</name>  
-        	<url>http://repo.spring.io/milestone</url>  
-        	<snapshots>  
-           		 <enabled>false</enabled>  
-       		</snapshots>  
-   	  	</repository>  
-	</repositories> 
+
+	<repositories>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>http://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 </project>
