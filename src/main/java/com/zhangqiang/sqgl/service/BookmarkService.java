@@ -13,7 +13,7 @@ public class BookmarkService {
 	private BookmarkRepository repository;
 	
 	public List<Bookmark> getAll(){
-		return repository.findAll();
+		return repository.findByClassidNot(1L);
 	}
 	/**
 	 * 删除书签

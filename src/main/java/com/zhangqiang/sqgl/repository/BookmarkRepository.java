@@ -11,8 +11,8 @@ import com.zhangqiang.sqgl.domain.Bookmark;
 
 @org.springframework.stereotype.Repository
 public interface BookmarkRepository extends Repository<Bookmark, Long> {
-	@Query(value = "select * from  BOOKMARK  where id <> 1", nativeQuery = true)
-    List<Bookmark> findAll();
+	
+    List<Bookmark> findByClassidNot(Long classId);
     
     void save(Bookmark bookmark);
     
