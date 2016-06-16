@@ -35,6 +35,18 @@ public class BookmarkClass implements Serializable {
 	public BookmarkClass() {
 		super();
 	}
+	
+	
+
+	public BookmarkClass(Long id, String classname, Date createdate, String parentid) {
+		super();
+		this.id = id;
+		this.classname = classname;
+		this.createdate = createdate;
+		this.parentid = parentid;
+	}
+
+
 
 	public Long getId() {
 		return id;
