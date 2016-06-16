@@ -20,7 +20,7 @@ public class BookmarkOrderService {
 	 * */
 	public List<Bookmark> getAll() {
 		
-		return repository.findByClassid(1L);
+		return repository.findByClassid(0L);
 	}
 
 	public void click(Long id) {

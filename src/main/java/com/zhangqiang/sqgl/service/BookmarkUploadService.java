@@ -83,7 +83,7 @@ public class BookmarkUploadService {
 				bookmark.setModifydate(nowDate);
 				bookmark.setFilename(filename);
 				bookmark.setIcon(element.attr("ICON"));
-				bookmark.setClassid(1L);      		//默认为1,即未分类
+				bookmark.setClassid(0L);      		//默认为1,即未分类
 				bookmark.setLastdate(nowDate);
 				//将bookmark对象加入数组中
 				bookmarks.add(bookmark);
