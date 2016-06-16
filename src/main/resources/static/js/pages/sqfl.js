@@ -577,8 +577,7 @@ function confirmOnclick(){
         type : "get",  //提交方式  
         url : "/sqfl/delete",//路径  
         data:{
-        	ids:ids,
-        	classId:classId
+        	ids:ids
         },
         success:function(data){
         	edittable.datatable.row(rows[0]).remove();
