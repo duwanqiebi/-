@@ -529,7 +529,7 @@ function modalClassify(){
 }
 
 /**删除书签**/
-function delete(){
+function deleteBookmark(){
 	//首先判断是否选择了行
 	var table = $('#datatable-editable').DataTable();
 	rows = table.rows('.selected');
