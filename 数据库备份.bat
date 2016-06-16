@@ -1,0 +1,1 @@
+java -cp h2*.jar  org.h2.tools.Script -url jdbc:h2:file:C:/Users/zhangqiangs/Desktop/sqgl/data/sqgl -script backup.zip -options compression zip
