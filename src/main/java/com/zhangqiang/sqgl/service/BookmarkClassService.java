@@ -22,9 +22,7 @@ public class BookmarkClassService {
 	
 	public String getAllJson(){
 		List<BookmarkClass> list = classRepository.findAll();
-		if(list.size() == 0){
-			list.add(new BookmarkClass(0L,"Root",null,"#"));
-		}
+		list.add(new BookmarkClass(0L,"Root",null,"#"));
 		SimplePropertyPreFilter filter = new SimplePropertyPreFilter(BookmarkClass.class, "id","text","parent");
 		String json = JSON.toJSONString(list,filter );
 		return json;
